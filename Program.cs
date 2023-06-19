@@ -42,9 +42,10 @@ class ContactManager
                 printTasks();
                 PressAnyButton("This is your contacts");
                 Options();
-            } catch
+            } catch(Exception err)
             {
-                PressAnyButton("You don't have any tasks");
+                Console.WriteLine(err);
+                PressAnyButton("You don't have any contacts");
                 Options();
             }
         }
@@ -70,7 +71,7 @@ class ContactManager
         }
         catch
         {
-            PressAnyButton("You don't have any tasks");
+            PressAnyButton("You don't have any contacts");
             Options();
         }
     }
@@ -78,9 +79,10 @@ class ContactManager
     {
         try
         {
-            Console.WriteLine("Give us name|email|number");
+            Console.WriteLine("Give us name|email|number|index");
             string property = Console.ReadLine();
             List<Contact> contact = ContactsManager.FindContact(property);
+            Console.WriteLine(contact.Count);
             if (contact.Count == 0)
             {
                 PressAnyButton("Didn't found anything");
@@ -88,11 +90,15 @@ class ContactManager
             }
             else
             {
-                foreach(Contact el in contact)
+                Console.WriteLine("This is what I found:");
+                int i = 0;
+                foreach (Contact el in contact)
                 {
-                    Console.WriteLine($"{el.name},{el.number},${el.email}");
+                    Console.WriteLine($" index:{i} \n Naim:{el.name},\n Number:{el.number},\n Email:{el.email}");
+                    i++;
                 }
-                PressAnyButton("This is what i found");
+                PressAnyButton("");
+                Options();
             }
         }
         catch
@@ -131,13 +137,14 @@ class ContactManager
         {
             contacts = ContactsManager.GetContacts();
             
-        } catch
+        } catch(Exception err)
         {
             contacts = new List<Contact>();
         }
         contacts.Add(contact);
         ContactsManager.WriteContacts(contacts);
         PressAnyButton("Added your task");
+        Options();
 
     }
     public static string giveMe(string message)
@@ -156,9 +163,12 @@ class ContactManager
     public static void printTasks()
     {
         List < Contact >  contacts = ContactsManager.GetContacts();
+        if (contacts.Count == 0) throw new Exception();
+        int i = 0;
         foreach(Contact el in contacts)
         {
-            Console.WriteLine($"{el.name},{el.number},${el.email}");
+            Console.WriteLine($" index:{i} \n Naim:{el.name},\n Number:{el.number},\n Email:{el.email}");
+            i++;
         }
     }
     public static void Main()
